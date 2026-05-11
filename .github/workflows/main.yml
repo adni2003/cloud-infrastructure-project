@@ -1,0 +1,27 @@
+name: Cloud CI Pipeline
+
+# Trigger the robot every time we "push" code to the main branch
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Pull the code from your repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Set up the Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    # 3. Try to build the Docker image to make sure it's not broken
+    - name: Test Docker Build
+      run: |
+        docker build -t cloud-health-check .
+        echo "Build Successful!"
